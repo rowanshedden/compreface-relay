@@ -34,10 +34,19 @@ git pull
 ```
 
 # Build and Run
-Perform a clean install and run the application
+Perform a clean install
 ```
 mvn clean install
+```
+
+Run the application with default values
+```
 mvn spring-boot:run
+```
+
+Run the application with a specific profile
+```
+mvn spring-boot:run -Dspring-boot.run.profiles=damien
 ```
 
 # Local Browser Access
