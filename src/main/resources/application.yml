@@ -1,0 +1,67 @@
+spring:
+
+server:
+  port: 8005
+
+# Logging options
+logging:
+  dump-headers: false
+  level:
+    org.springframework: INFO
+    aero.sita: INFO
+
+# App properties
+app.name: CompreFace Relay
+app.version: 1.0
+
+# Gallery Service websocket URL, message size in MB and WS heart beat and connection retry intervals
+app.feeder.ws.url: wss://gallery-services-staging.sitalab.io/gallery
+app.feeder.ws.message.size: 3
+app.feeder.ws.connect.interval: 30
+app.feeder.ws.heartbeat.interval: 45
+
+# CompreFace endpoint
+app.feeder.compreface.url: http://192.168.1.181
+app.feeder.recognition.apikey: a389f6ab-5749-4637-8b48-24293cd90404
+app.feeder.compreface.detection.threshold: 0.8
+
+# Itinerary defaults
+app.feeder.terminal: 1
+app.feeder.location: Loyang
+app.feeder.country: SG
+app.feeder.port: TGA
+app.feeder.alt.country: AU
+app.feeder.alt.port: SYD
+app.feeder.flight: QF1234
+
+# Logging mask filter for privacy
+app.mask.logging: false
+
+# Swagger
+swagger.enabled: true
+
+---
+
+spring:
+  config.activate.on-profile: local
+
+# Logging options
+logging:
+  level:
+    org.springframework: INFO
+    aero.sita: DEBUG
+
+# Gallery Service websocket URL, message size in MB and WS heart beat and connection retry intervals
+app.feeder.ws.url: ws://localhost:8002/gallery
+app.feeder.ws.message.size: 1
+app.feeder.ws.connect.interval: 30
+app.feeder.ws.heartbeat.interval: 45
+app.feeder.ws.disable.ssl: true
+
+---
+
+spring:
+  config.activate.on-profile: damien
+
+# CompreFace endpoint
+app.feeder.compreface.url: http://10.0.0.127:8000

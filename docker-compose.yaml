@@ -1,0 +1,12 @@
+networks:
+  app-network:
+
+services:
+
+  compreface-relay:
+    container_name: compreface-relay
+    image: compreface-relay:latest
+    networks:
+      - app-network
+    ports:
+      - 8005:8005
