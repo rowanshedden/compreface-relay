@@ -1,5 +1,31 @@
 spring:
 
+# Not accessing the real Postgres database at this stage but keep for possible future use
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/frs
+#    username: postgres
+#    password: postgres
+#  jpa:
+#    properties:
+#      hibernate:
+#        default_schema: public
+#        format_sql: true
+#        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+#    hibernate:
+#      ddl-auto: none
+  datasource:
+    url: jdbc:h2:mem:comprefacedb
+    username: sa
+    password: password
+  jpa:
+    properties:
+      hibernate:
+        default_schema: public
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+
 server:
   port: 8005
 
@@ -21,7 +47,7 @@ app.feeder.ws.connect.interval: 30
 app.feeder.ws.heartbeat.interval: 45
 
 # CompreFace endpoint
-app.feeder.compreface.url: http://192.168.1.181
+app.feeder.compreface.url: http://192.169.1.181
 app.feeder.recognition.apikey: a389f6ab-5749-4637-8b48-24293cd90404
 app.feeder.compreface.detection.threshold: 0.8
 
@@ -50,6 +76,9 @@ logging:
   level:
     org.springframework: INFO
     aero.sita: DEBUG
+
+# CompreFace endpoint
+app.feeder.compreface.url: http://localhost:8081
 
 # Gallery Service websocket URL, message size in MB and WS heart beat and connection retry intervals
 app.feeder.ws.url: ws://localhost:8002/gallery

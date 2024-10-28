@@ -12,10 +12,10 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 public class SubjectResponse extends BaseResponse {
 
-    @ApiModelProperty(example = "640e07c4-856b-4d85-9867-7c1fe24b773e", value = "Unique subject identifier")
+    @ApiModelProperty(example = "640e07c4-856b-4d85-9867-7c1fe24b773e", value = "Unique image identifier")
     private String image_id;
 
-    @ApiModelProperty(example = "<name>Rowan Shedden</name>", value = "Subject data")
+    @ApiModelProperty(example = "Rowan Shedden", value = "Subject name")
     private String subject;
 
     @ApiModelProperty(example = "6", value = "Deleted record number")

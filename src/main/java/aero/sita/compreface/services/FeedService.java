@@ -111,16 +111,14 @@ public class FeedService {
          * e.g.
          * POST api/v1/recognition/faces?subject=Damien Mascord
          */
+        SubjectResponse subjectResponse = new SubjectResponse();
         try {
-            SubjectRequest subjectRequest = new SubjectRequest();
-            subjectRequest.setFile(galleryRecord.getDtc().getLiveImage());
-            String subjectName = galleryRecord.getDtc().getGivenNames() + " " + galleryRecord.getDtc().getFamilyName();
-            RawHttpResult result = restInterface.call(url, "api/v1/recognition/faces?subject=" + subjectName.trim() + "&det_prob_threshold=" + detectionThreshold, HttpMethod.POST, subjectRequest.toJson());
+            SubjectDetailsDto request = new SubjectDetailsDto(galleryRecord);
+            RawHttpResult result = restInterface.call(url, "api/v1/recognition/faces/subject?det_prob_threshold=" + detectionThreshold, HttpMethod.POST, request.toJson());
             String body = result.getBody();
-            SubjectResponse subjectResponse = (SubjectResponse) MiscUtil.fromJson(body, SubjectResponse.class);
-            assert subjectResponse != null;
+            SubjectDetailsDto response = (SubjectDetailsDto) MiscUtil.fromJson(body, SubjectDetailsDto.class);
+            assert response != null && response.getSubject() != null && response.getImageId() != null;
             subjectResponse.setSuccess(result.isSuccess());
-            return subjectResponse;
         } catch (Exception e) {
             String errorMessage = "Unable to add subject: " + e.getLocalizedMessage();
             log.error(errorMessage);
@@ -128,6 +126,7 @@ public class FeedService {
             errorResponse.setError(new Error(System.currentTimeMillis(), 9999, "CompreFace relay add subject response", errorMessage, null));
             return errorResponse;
         }
+        return subjectResponse;
     }
 
     /**

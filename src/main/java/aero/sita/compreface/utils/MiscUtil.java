@@ -97,7 +97,7 @@ public class MiscUtil {
 	/**
 	 * Set the list of UPK attributes
 	 * 
-	 * @param upkAttributes
+	 * @param attributes
 	 */
 	public static void setUpkAttributes(String attributes) {
 		upkAttributes = new ArrayList<String>();

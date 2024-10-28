@@ -49,7 +49,7 @@ echo "#"
 echo "# Stage 4: Start and run the container in detached mode"
 echo "#"
 echo
-docker-compose -f docker-compose.yaml up -d
+docker compose -f docker-compose.yaml up -d
 #
 echo
 echo "#"
