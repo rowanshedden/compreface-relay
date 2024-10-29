@@ -2,7 +2,7 @@ spring:
 
 # Not accessing the real Postgres database at this stage but keep for possible future use
 #  datasource:
-#    url: jdbc:postgresql://localhost:5432/frs
+#    url: jdbc:postgresql://compreface-postgres-db/frs
 #    username: postgres
 #    password: postgres
 #  jpa:
@@ -46,9 +46,9 @@ app.feeder.ws.message.size: 3
 app.feeder.ws.connect.interval: 30
 app.feeder.ws.heartbeat.interval: 45
 
-# CompreFace endpoint
-app.feeder.compreface.url: http://localhost:8081
-app.feeder.recognition.apikey: a389f6ab-5749-4637-8b48-24293cd90404
+# CompreFace API endpoint
+app.feeder.compreface.url: http://192.168.1.181:8080
+app.feeder.recognition.apikey: 2688d27d-de70-46b4-82e7-1468bb0abab7
 app.feeder.compreface.detection.threshold: 0.8
 
 # Itinerary defaults
@@ -78,7 +78,7 @@ logging:
     aero.sita: DEBUG
 
 # CompreFace endpoint
-app.feeder.compreface.url: http://localhost:8081
+app.feeder.compreface.url: http://localhost:8080
 
 # Gallery Service websocket URL, message size in MB and WS heart beat and connection retry intervals
 app.feeder.ws.url: ws://localhost:8002/gallery
@@ -92,5 +92,6 @@ app.feeder.ws.disable.ssl: true
 spring:
   config.activate.on-profile: damien
 
-# CompreFace endpoint
-app.feeder.compreface.url: http://10.0.0.127:8000
+# CompreFace API endpoint
+app.feeder.compreface.url: http://10.0.0.127:8080
+app.feeder.recognition.apikey: 2688d27d-de70-46b4-82e7-1468bb0abab7

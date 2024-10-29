@@ -9,4 +9,4 @@ ARG SPRING_PROFILE
 RUN echo Spring profile: $SPRING_PROFILE
 ENV SPRING_PROFILES_ACTIVE=$SPRING_PROFILE
 
-ENTRYPOINT ["java","-jar","/application-relay.jar"]
+ENTRYPOINT ["java","-jar","/application.jar"]

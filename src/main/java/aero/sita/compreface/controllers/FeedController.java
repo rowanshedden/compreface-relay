@@ -38,6 +38,19 @@ public class FeedController extends Api_1_0 {
         return ResponseEntity.ok(response);
     }
 
+    @ApiOperation(value = "Feed a Digital Travel Lane UPDATE request to CompreFace", authorizations = {
+            @Authorization(value = "Bearer")}, response = SubjectResponse.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "CompreFace receives an add subject request")})
+    @RequestMapping(value = "feed/update", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
+            MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> updateSubject(@Validated @RequestBody GalleryAction request) {
+        SubjectResponse response = feedService.updateSubject(request);
+        if (!response.isSuccess()) {
+            return ResponseEntity.badRequest().body(response);
+        }
+        return ResponseEntity.ok(response);
+    }
+
     @ApiOperation(value = "Feed a Digital Travel Lane DELETE request to CompreFace", authorizations = {
             @Authorization(value = "Bearer")}, response = SubjectResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "CompreFace receives a delete request")})
