@@ -58,7 +58,7 @@ public class ServiceTests {
             /*
              * mock the CompreFace add subject call
              */
-            mockServer.expect(ExpectedCount.between(0, 1), requestTo(new URI("http://192.168.1.181/api/v1/recognition/faces?subject=Rowan&det_prob_threshold=0.8")))
+            mockServer.expect(ExpectedCount.between(0, 1), requestTo(new URI("http://compreface-dtl/api/v1/recognition/faces/subject?det_prob_threshold=0.8")))
                     .andExpect(method(HttpMethod.POST))
                     .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(subjectResponse));
 

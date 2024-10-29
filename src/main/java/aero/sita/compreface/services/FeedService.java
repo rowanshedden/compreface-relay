@@ -107,9 +107,6 @@ public class FeedService {
         /*
          * add subject to CompreFace using the CompreFace API
          *
-         * POST api/v1/recognition/faces?subject={{subject}}&det_prob_threshold={detection_threshold}
-         * e.g.
-         * POST api/v1/recognition/faces?subject=Damien Mascord
          */
         SubjectResponse subjectResponse = new SubjectResponse();
         try {
@@ -117,7 +114,7 @@ public class FeedService {
             RawHttpResult result = restInterface.call(url, "api/v1/recognition/faces/subject?det_prob_threshold=" + detectionThreshold, HttpMethod.POST, request.toJson());
             String body = result.getBody();
             SubjectDetailsDto response = (SubjectDetailsDto) MiscUtil.fromJson(body, SubjectDetailsDto.class);
-            assert response != null && response.getSubject() != null && response.getImageId() != null;
+            assert response != null && response.getName() != null;
             subjectResponse.setSuccess(result.isSuccess());
         } catch (Exception e) {
             String errorMessage = "Unable to add subject: " + e.getLocalizedMessage();
@@ -140,6 +137,7 @@ public class FeedService {
      * @param galleryAction GalleryAction
      */
     public SubjectResponse updateSubject(GalleryAction galleryAction) {
+        log.info(galleryAction.toJson());
         /*
          * extract the gallery record
          */
@@ -148,27 +146,23 @@ public class FeedService {
         /*
          * update the subject using the CompreFace API
          *
-         * PUT /api/v1/recognition/subjects/{{subject_name}}
-         * e.g.
-         * PUT /api/v1/recognition/subjects/Damien Mascord
          */
+        SubjectResponse subjectResponse = new SubjectResponse();
         try {
-            SubjectRequest subjectRequest = new SubjectRequest();
-            subjectRequest.setFile(galleryRecord.getDtc().getLiveImage());
-            String subjectName = galleryRecord.getDtc().getGivenNames() + " " + galleryRecord.getDtc().getFamilyName();
-            RawHttpResult result = restInterface.call(url, "/api/v1/recognition/subjects/" + subjectName.trim(), HttpMethod.PUT, subjectRequest.toJson());
+            SubjectDetailsDto request = new SubjectDetailsDto(galleryRecord);
+            RawHttpResult result = restInterface.call(url, "api/v1/recognition/faces/subject/update", HttpMethod.POST, request.toJson());
             String body = result.getBody();
-            SubjectResponse subjectResponse = (SubjectResponse) MiscUtil.fromJson(body, SubjectResponse.class);
-            assert subjectResponse != null;
+            SubjectDetailsDto response = (SubjectDetailsDto) MiscUtil.fromJson(body, SubjectDetailsDto.class);
+            assert response != null && response.getName() != null;
             subjectResponse.setSuccess(result.isSuccess());
-            return subjectResponse;
         } catch (Exception e) {
             String errorMessage = "Unable to update subject: " + e.getLocalizedMessage();
             log.error(errorMessage);
             SubjectResponse errorResponse = new SubjectResponse();
-            errorResponse.setError(new Error(System.currentTimeMillis(), 9999, "CompreFace relay update subject response", errorMessage, null));
+            errorResponse.setError(new Error(System.currentTimeMillis(), 9999, "CompreFace relay add subject response", errorMessage, null));
             return errorResponse;
         }
+        return subjectResponse;
     }
 
     /**
@@ -190,31 +184,27 @@ public class FeedService {
         /*
          * delete the subject using the CompreFace API
          *
-         * DELETE /api/v1/recognition/faces?subject={{subject_name}}
-         * e.g.
-         * DELETE /api/v1/recognition/faces?subject=gnm:Rowan George McDonald,fnm:Shedden,dob:1965-02-24,sex:M,nat:MYS,doc:BWUSM9BF,iss:MYS,exp:2026-09-03
          */
+        SubjectResponse subjectResponse = new SubjectResponse();
         try {
-            SubjectRequest subjectRequest = new SubjectRequest();
-            subjectRequest.setFile(galleryRecord.getDtc().getLiveImage());
-            String subjectName = galleryRecord.getDtc().getGivenNames() + " " + galleryRecord.getDtc().getFamilyName();
-            RawHttpResult result = restInterface.call(url, "/api/v1/recognition/faces?subject=" + subjectName.trim(), HttpMethod.DELETE, subjectRequest.toJson());
+            SubjectDetailsDto request = new SubjectDetailsDto(galleryRecord);
+            RawHttpResult result = restInterface.call(url, "api/v1/recognition/faces/delete", HttpMethod.POST, request.toJson());
             String body = result.getBody();
-            SubjectResponse subjectResponse = (SubjectResponse) MiscUtil.fromJson(body, SubjectResponse.class);
-            assert subjectResponse != null;
+            SubjectDetailsDto response = (SubjectDetailsDto) MiscUtil.fromJson(body, SubjectDetailsDto.class);
+            assert response != null && response.getName() != null;
             subjectResponse.setSuccess(result.isSuccess());
-            return subjectResponse;
         } catch (Exception e) {
             String errorMessage = "Unable to delete subject: " + e.getLocalizedMessage();
             log.error(errorMessage);
             SubjectResponse errorResponse = new SubjectResponse();
-            errorResponse.setError(new Error(System.currentTimeMillis(), 9999, "CompreFace relay delete subject response", errorMessage, null));
+            errorResponse.setError(new Error(System.currentTimeMillis(), 9999, "CompreFace relay add subject response", errorMessage, null));
             return errorResponse;
         }
+        return subjectResponse;
     }
 
     /**
-     * Received an API delete all subjects message.
+     * Delete all subjects message.
      * <p>
      * The Feed Service will receive a GET /subject/delete message via
      * the API and the CompreFace /api/v1/recognition/subjects API is

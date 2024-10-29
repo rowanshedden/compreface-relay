@@ -22,7 +22,7 @@ app.feeder.ws.heartbeat.interval: 45
 app.feeder.ws.disable.ssl: true
 
 # CompreFace endpoint
-app.feeder.compreface.url: http://192.168.1.181
+app.feeder.compreface.url: http://compreface-dtl
 app.feeder.recognition.apikey: a389f6ab-5749-4637-8b48-24293cd90404
 app.feeder.compreface.detection.threshold: 0.8
 

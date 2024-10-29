@@ -1,6 +1,5 @@
 package aero.sita.compreface.models.dto;
 
-import aero.sita.compreface.models.SubjectDetails;
 import aero.sita.compreface.utils.MiscUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiParam;
@@ -17,15 +16,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class SubjectDetailsDto extends BaseRequest {
 
-    @ApiParam(value = "subject - a concatenation of first and last name")
-    @JsonProperty("subject")
+    @ApiParam(value = "flagged")
+    @JsonProperty("flagged")
     @Nullable
-    private String subject;
-
-    @ApiParam(value = "image_id")
-    @JsonProperty("image_id")
-    @Nullable
-    private String imageId;
+    private Boolean flagged;
 
     @JsonProperty("image")
     @NotNull
@@ -92,13 +86,12 @@ public class SubjectDetailsDto extends BaseRequest {
     @Nullable
     private String upk;
 
-    public String getSubject() {
-        String name = getGivenNames() + " " + getFamilyName();
-        setSubject(name);
-        return name;
+    public String getName() {
+        return getGivenNames() + " " + getFamilyName();
     }
 
     public SubjectDetailsDto(GalleryRecord galleryRecord) {
+        this.flagged = galleryRecord.isAccessAllowed();
         this.givenNames = galleryRecord.getDtc().getGivenNames();
         this.familyName = galleryRecord.getDtc().getFamilyName() != null ? galleryRecord.getDtc().getFamilyName() : "";
         this.dateOfBirth = galleryRecord.getDtc().getDateOfBirth();
@@ -108,27 +101,10 @@ public class SubjectDetailsDto extends BaseRequest {
         this.documentNumber = galleryRecord.getDtc().getDocumentNumber();
         this.issuingState = galleryRecord.getDtc().getIssuingState();
         this.expiryDate = galleryRecord.getDtc().getExpiryDate();
-//        this.itinerary = MiscUtil.toJson(galleryRecord.getItinerary());
-//        this.assessment = MiscUtil.toJson(galleryRecord.getChecks());
+        this.itinerary = MiscUtil.toJson(galleryRecord.getItinerary());
+        this.assessment = MiscUtil.toJson(galleryRecord.getChecks());
         this.upk = galleryRecord.getDtc().getUpk();
         this.image = galleryRecord.getDtc().getLiveImage();
-    }
-
-    public SubjectDetailsDto(SubjectDetails subjectDetails) {
-        this.imageId = subjectDetails.getImageId();
-        this.givenNames = subjectDetails.getGivenNames();
-        this.familyName = subjectDetails.getFamilyName();
-        this.subject = this.givenNames + " " + this.familyName;
-        this.dateOfBirth = subjectDetails.getDateOfBirth();
-        this.gender = subjectDetails.getGender();
-        this.nationality = subjectDetails.getNationality();
-        this.documentType = subjectDetails.getDocumentType();
-        this.documentNumber = subjectDetails.getDocumentNumber();
-        this.issuingState = subjectDetails.getIssuingState();
-        this.expiryDate = subjectDetails.getExpiryDate();
-        this.itinerary = subjectDetails.getItinerary();
-        this.assessment = subjectDetails.getAssessment();
-        this.upk = subjectDetails.getUpk();
     }
 
 }

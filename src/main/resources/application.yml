@@ -47,7 +47,7 @@ app.feeder.ws.connect.interval: 30
 app.feeder.ws.heartbeat.interval: 45
 
 # CompreFace endpoint
-app.feeder.compreface.url: http://192.169.1.181
+app.feeder.compreface.url: http://localhost:8081
 app.feeder.recognition.apikey: a389f6ab-5749-4637-8b48-24293cd90404
 app.feeder.compreface.detection.threshold: 0.8
 

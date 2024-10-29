@@ -20,11 +20,8 @@ public class SubjectDetails {
     @GeneratedValue
     UUID id;
 
-    @Column(name = "subject", nullable = false)
-    private String subject;
-
-    @Column(name = "image_id", nullable = false)
-    private String imageId;
+    @Column(name = "flagged", nullable = false)
+    private Boolean flagged;
 
     @Column(name = "upk", nullable = false)
     private String upk;
