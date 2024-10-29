@@ -137,7 +137,6 @@ public class FeedService {
      * @param galleryAction GalleryAction
      */
     public SubjectResponse updateSubject(GalleryAction galleryAction) {
-        log.info(galleryAction.toJson());
         /*
          * extract the gallery record
          */
