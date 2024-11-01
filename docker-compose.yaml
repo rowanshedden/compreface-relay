@@ -4,6 +4,7 @@ networks:
 services:
 
   compreface-relay:
+    restart: always
     container_name: compreface-relay
     image: compreface-relay:latest
     networks:

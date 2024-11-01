@@ -1,4 +1,4 @@
-package aero.sita.compreface.models;
+package aero.sita.compreface.models.dao;
 
 import lombok.*;
 import lombok.experimental.Accessors;

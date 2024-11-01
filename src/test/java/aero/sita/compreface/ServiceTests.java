@@ -56,6 +56,13 @@ public class ServiceTests {
             assertThat(subjectResponse).isNotNull();
 
             /*
+             * mock the CompreFace backdoor apikey call
+             */
+            mockServer.expect(ExpectedCount.between(0, 1), requestTo(new URI("http://compreface-dtl/api/v1/backdoor/default")))
+                    .andExpect(method(HttpMethod.GET))
+                    .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body("0"));
+
+            /*
              * mock the CompreFace add subject call
              */
             mockServer.expect(ExpectedCount.between(0, 1), requestTo(new URI("http://compreface-dtl/api/v1/recognition/faces/subject?det_prob_threshold=0.8")))

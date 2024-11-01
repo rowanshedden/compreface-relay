@@ -3,6 +3,7 @@ package aero.sita.compreface.handlers;
 import aero.sita.compreface.exception.ServiceException;
 import aero.sita.compreface.models.dto.Error;
 import aero.sita.compreface.models.dto.RawHttpResult;
+import aero.sita.compreface.models.dto.SubjectResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,16 @@ public class RestInterfaceHandler {
     private HttpHeaders headers;
 
     @Value("${app.feeder.recognition.apikey}")
-    private String apikey;
+    private String recognitionApikey;
+
+    @Value("${app.feeder.compreface.url}")
+    private String recognitionUrl;
+
+    @Value("${app.feeder.recognition.application}")
+    private String recognitionApplication;
 
     @Autowired
     RestTemplate restTemplate;
-
-    @PostConstruct
-    void postConstruct() {
-        headers = new HttpHeaders();
-        headers.add("x-api-key", apikey);
-    }
 
     /**
      * Call the CompreFace API
@@ -42,6 +43,8 @@ public class RestInterfaceHandler {
      * @return RawHttpResult
      */
     public RawHttpResult call(String domain, String path, HttpMethod httpMethod, String body) {
+        if (headers == null)
+            setApikey();
         headers.setContentType(MediaType.APPLICATION_JSON);
         RawHttpResult result = new RawHttpResult();
         if (!path.isEmpty() && !path.startsWith("/"))
@@ -105,6 +108,27 @@ public class RestInterfaceHandler {
         } else {
             result.setSuccess(true);
         }
+    }
+
+    private void setApikey() {
+        String comprefaceApikey = recognitionApikey;
+        String application = (recognitionApplication.isEmpty() || recognitionApplication.isBlank()) ? "default" : recognitionApplication;
+        log.info("fetching apikey for application: {}", application);
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(recognitionUrl + "/api/v1/backdoor/" + application, HttpMethod.GET, new HttpEntity<>(headers), String.class);
+            String body = response.getBody();
+            log.info("fetched apikey: {}", body);
+            if (body != null && !body.equals("0"))
+                comprefaceApikey = body;
+        } catch (Exception e) {
+            String errorMessage = "Unable to determine CompreFace apps: " + e.getLocalizedMessage();
+            log.error(errorMessage);
+            SubjectResponse errorResponse = new SubjectResponse();
+            errorResponse.setError(new Error(System.currentTimeMillis(), 9999, "CompreFace admin apps response", errorMessage, null));
+        }
+        headers = new HttpHeaders();
+        headers.add("x-api-key", comprefaceApikey);
+        log.info("headers: {}", headers.get("x-api-key"));
     }
 
 }
