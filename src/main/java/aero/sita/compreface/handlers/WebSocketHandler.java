@@ -217,6 +217,8 @@ public class WebSocketHandler {
                     response = feedService.addSubject(galleryAction);
                 } else if (galleryAction.getAction().equals(Action.UPDATE)) {
                     response = feedService.updateSubject(galleryAction);
+                } else if (galleryAction.getAction().equals(Action.DELETE)) {
+                    response = feedService.deleteSubject(galleryAction);
                 } else {
                     response = new SubjectResponse();
                     response.setError(new Error(System.currentTimeMillis(), 9999, "CompreFace relay websocket response", "Ignored - not ADD/UPDATE/DELETE", null));

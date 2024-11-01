@@ -58,6 +58,8 @@ public class FeedService {
      * @param galleryAction GalleryAction
      */
     public SubjectResponse addSubject(GalleryAction galleryAction) {
+        String upk = galleryAction.getUpk();
+        log.info("Add subject with upk: {}", upk);
         /*
          * extract the gallery record
          */
@@ -137,6 +139,8 @@ public class FeedService {
      * @param galleryAction GalleryAction
      */
     public SubjectResponse updateSubject(GalleryAction galleryAction) {
+        String upk = galleryAction.getUpk();
+        log.info("Update subject with upk: {}", upk);
         /*
          * extract the gallery record
          */
@@ -175,22 +179,20 @@ public class FeedService {
      * @param galleryAction GalleryAction
      */
     public SubjectResponse deleteSubject(GalleryAction galleryAction) {
-        /*
-         * extract the gallery record
-         */
-        GalleryRecord galleryRecord = galleryAction.getData();
-
+        String upk = galleryAction.getUpk();
+        log.info("Delete subject with upk: {}", upk);
         /*
          * delete the subject using the CompreFace API
          *
          */
         SubjectResponse subjectResponse = new SubjectResponse();
         try {
-            SubjectDetailsDto request = new SubjectDetailsDto(galleryRecord);
+            SubjectDetailsDto request = new SubjectDetailsDto();
+            request.setUpk(upk);
             RawHttpResult result = restInterface.call(url, "api/v1/recognition/faces/delete", HttpMethod.POST, request.toJson());
             String body = result.getBody();
             SubjectDetailsDto response = (SubjectDetailsDto) MiscUtil.fromJson(body, SubjectDetailsDto.class);
-            assert response != null && response.getName() != null;
+            assert response != null;
             subjectResponse.setSuccess(result.isSuccess());
         } catch (Exception e) {
             String errorMessage = "Unable to delete subject: " + e.getLocalizedMessage();
