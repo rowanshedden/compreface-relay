@@ -189,7 +189,7 @@ public class FeedService {
         try {
             SubjectDetailsDto request = new SubjectDetailsDto();
             request.setUpk(upk);
-            RawHttpResult result = restInterface.call(url, "api/v1/recognition/faces/delete", HttpMethod.POST, request.toJson());
+            RawHttpResult result = restInterface.call(url, "api/v1/recognition/subjects/" + upk, HttpMethod.DELETE, request.toJson());
             String body = result.getBody();
             SubjectDetailsDto response = (SubjectDetailsDto) MiscUtil.fromJson(body, SubjectDetailsDto.class);
             assert response != null;
